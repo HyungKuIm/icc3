@@ -1,0 +1,793 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #F8F8FF;
+    font-family: 'Arial', sans-serif;
+    overflow-x: hidden; /* 가로 스크롤 제거 */
+}
+
+
+
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    border: 5px double #A6C8FF;
+    border-radius: 8px;
+    padding: 20px;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.cafe_map {
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.cafe_map img {
+    width: 450px;   /* 100% */
+    height: 400px;
+    border-radius: 8px;
+}
+#map{
+    width: 450px;
+    height: 400px;
+    position: relative;
+}
+
+.cafe_info, #cafe_box {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+#detail_section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#review_example {
+    width: 100%;
+    background:  #F5ECCE;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto;
+    margin-top: 20px;
+    height: 500px; /* 높이를 고정하여 깔끔한 레이아웃 유지 */
+}
+
+button[type=button], button.favorite {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 36px;
+    color: #ff4757;
+}
+
+button.favorite:hover {
+    color: #e84118;
+}
+
+button.submit-review {
+    background-color: #F0CB85;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    height: 50px;
+    width: 200px;
+    margin: 0px;
+
+}
+
+button.submit-review:hover {
+    background-color: #FFB399;
+}
+
+.cafe_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h4, h5 {
+    margin: 0;
+}
+
+.cafe_info ul {
+    padding: 0;
+}
+
+.cafe_info li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+.cafe_info table, .cafe_info th, .cafe_info td {
+        border: 1px solid black; /* 1px width, solid style, black color */
+    }
+
+.cafe_info table {
+        border-collapse: collapse; /* Collapses adjacent borders into a single border */
+    }    
+
+.flex-container {
+    /* display: inline-flex; */ /* 평점과 리뷰 점수를 한 줄에 배치 */
+    align-items: center; /* 두 요소를 수직으로 정렬 */
+}
+
+.review-score {
+    margin-left: 30px;
+}
+#review-bt{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+p{
+    margin: 2px;
+}
+#map{
+    overflow: visible;
+    margin-left: 20px;
+}
+.review-container {
+    margin-bottom: 20px; /* 리뷰 항목 간격 */
+}
+
+.stars-mood {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 별과 MOOD 사이의 간격 */
+}
+.stars .fa-star {
+    color: red; /* 원하는 색상으로 변경 */
+}
+.oval-container {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 20px; /* 타원형 효과 */
+    text-align: center;
+    font-size: 12px;
+    min-width: 60px; /* 최소 너비 설정 (필요시 조정) */
+}
+#no_cafe{
+    font-size: 50px;
+    text-align:center;
+    align-items: center;
+    display: flex;
+    height: 280px;
+}
+
+
+
+.kind_wrap {
+    border: 3px solid #464646;
+    border-radius: 50px;
+    background-color: #F0F8FF;
+    width: 100%;
+    max-width: 1500px;
+    height: 350px;
+    margin: 0 auto;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.slider li {
+    flex: 0 0 auto;
+    list-style: none;
+    margin-left: 20px;
+}
+.card {
+    margin-top: 12%;
+    border: none;
+    transition: transform .5s;
+    transform: scale(1.0);
+    margin-right: 25px;
+}
+
+#main{
+    margin-left:20px;
+    font-size: 50px;
+}
+
+#main_img {
+    width: 100px;
+    height: 100px;
+}
+img {
+    width: 300px;
+    height: 200px;
+}
+.card:hover {
+    transform: scale(1.1);
+    transition: transform .5s;
+}
+
+#container button {
+    padding: 5px 10px;
+    border-radius: 15%;
+    border: none;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-color: #F4E1D2;
+    color: #333333;
+}
+#container button:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.swiper-slide {
+    display: flex;
+    align-items: middle;
+    justify-content: center;
+    margin-bottom: 5px; /* 슬라이드 간의 간격을 10px로 설정 */
+}
+
+.swiper-slide:last-child {
+    margin-right: 0; /* 마지막 슬라이드의 오른쪽 마진을 없앰 */
+}
+.swiper-button-next,
+.swiper-button-prev {
+    font-size: 24px; /* 화살표 크기 */
+    color: black; /* 화살표 색상 */
+}
+.container-fluid{
+    max-width: 1500px;
+}
+
+/* header */
+
+
+.content-head{
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-top: 20px;
+}
+#list{
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-around;
+    font-weight: bolder;
+    font-size: 20px;
+    background: #A6C8FF;
+    width: 1500px;
+}
+#a1:hover{
+    background-color:#EBFBFF;
+}
+.button1{
+    padding: 5px 10px;
+    border-radius: 15%;
+    border: none !important;
+    font-size: 20px !important;
+    height: 50px;
+    margin-top: 30px;
+    background-color:#FFA07A !important;
+    color: #333333 !important;
+}
+.button1:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#a{
+    text-decoration: none;
+    color: black;
+}
+#a1{
+    text-decoration: none;
+    color: black;
+}
+
+/* footer */
+.footer {
+    padding: 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #555;
+}
+.footer_A {
+    cursor: pointer;
+    margin: 0 5px;
+    color: #007bff;
+    text-decoration: underline;
+}
+.footer p {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.error {
+    background-color: #fdecea;
+    color: #d9534f;
+    border: 1px solid #e74c3c;
+}
+
+.logout-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+
+/* 마이 페이지 */
+
+.my-page {
+    flex-direction: row !important;
+    align-items: start;
+}
+
+section>aside{
+
+    width: 220px; height: 400px;
+    float: left;
+    background-color: beige;
+    margin-left: 250px;
+    margin-right: 200px;
+
+
+}
+section>article{
+    width: 500px;
+    float: left;
+    margin-left: 400px;
+    margin-top: 40px;
+}
+
+section>aside ul li {
+
+    font-size: 14px;
+    background-color: transparent;
+    padding: 5px;
+}
+
+section>aside ul li:hover {
+
+    font-size: 18px;
+    background-color:#F5ECCE;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+
+}
+
+
+#mypagebt {
+    position: relative;
+    top : 20px;
+    left : 100px;
+    border: none;
+    width: 150px;
+    height: 40px;
+    background: #F0CB85;
+    cursor: pointer;
+}
+#regform{
+    width: 250px;
+    height: 30px;
+}
+
+#mypagediv{
+    background-color:#FAFAD2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*margin-top: 30px;*/
+    width: 600px;
+
+
+}
+
+
+
+label[for="gender01"], label[for="gender02"] {
+    margin-bottom: 0;
+}
+label {
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.regfromc {
+    background: lightgray;
+}
+
+/* 검색 결과 */
+.kind_wrap {
+    border:3px solid #464646;
+    border-radius : 50px;
+    background-color:#F0F8FF;
+    width:1200px;
+    max-width:2000px;
+    /*height : 100%;*/
+    margin:0 auto;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom:30px;
+}
+.kind_slider {
+    overflow: hidden;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 10px; /* 카드 사이의 간격 */
+}
+.slider {
+    position: relative;
+    transition: 0.5s;
+    justify-content: space-around;
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.theme_img .rating-text {
+    margin-top: 5px; /* 이미지와 텍스트 사이의 여백 */
+}
+.button-group {
+    margin-top: 10px; /* 버튼 그룹과 이미지 사이의 여백 */
+    margin-top: 0; /* 버튼 그룹의 상단 여백 제거 */
+    padding: 0; /* 버튼 그룹의 패딩 제거 */
+}
+.cafe-search-result {
+    display: flex;
+    justify-content: center;
+}
+
+.cafe-search-result aside {
+    width: 220px; /* 사이드바 너비 */
+    background: beige;
+    height: 800px; /* 사이드바 높이를 100%로 설정 */
+    transition: transform 0.3s ease;
+    position: sticky;
+}
+
+.com_image {
+	width: 100px;
+	height: 100px;
+}
+
+.filter-button {
+    background-color: #F4E1D2; /* 버튼 배경색 */
+    border: 1px solid #ccc; /* 버튼 테두리 색 */
+    border-radius: 5px; /* 버튼 테두리 둥글게 */
+    padding: 5px 10px; /* 버튼 패딩 */
+    margin: 5px 0; /* 버튼 사이의 여백 */
+    cursor: pointer; /* 커서 변경 */
+}
+.filter-button:hover {
+    background-color: skyblue; /* 버튼 호버 배경색 */
+}
+#main_img{
+    width: 100px; height: 100px;
+}
+.cafe-search-result .card{
+    margin-top: 40px;
+    border: none;
+    transition: transform .5s;
+    transform: scale(1.0);
+    margin-right: 25px
+}
+
+.cafe-search-result .card-group {
+	display: flex;
+	gap: 10px;
+}
+
+.cafe-search-result .card-img-top{
+    width: 330px; height: 200px;
+}
+.cafe-search-result .card:hover{
+    transform: scale(1.1);
+    transition: transform .5s;
+}
+.cafe-search-result li {
+    flex: 0 0 auto;
+    list-style: none;
+}
+
+
+
+#map{
+    width: 96%;
+    height: 300px;
+    margin-left: 50px;
+    display: inline-block;
+    margin-top: 10px;
+}
+#no_cafe{
+    font-size: 35px;
+    display: flex;
+    width: 100%
+}
+.no_cafe{
+    font-size: 15px;
+}
+.centered-list {
+    display: flex;             /* Flexbox 사용 */
+    flex-direction: column;   /* 세로 방향으로 정렬 */
+    align-items: center;      /* 가운데 정렬 */
+    justify-content:center;
+    list-style: none;         /* 기본 리스트 스타일 제거 */
+    margin-left:130px;
+    height: 500px;
+}
+.centered-list li {
+    text-align: left;         /* 텍스트 왼쪽 정렬 */
+    width: 100%;              /* li 요소의 너비를 100%로 설정 */
+    max-width: 1500px;         /* 최대 너비 설정 (필요에 따라 조정) */
+    margin: 5px 0;           /* 항목 간의 여백 설정 */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#theme{
+    font-size: 20px;
+    list-style: none;
+
+}
+.theme{
+    font-size: 15px;
+}
+
+/* 리뷰 작성 */
+.rate {
+    display: inline-block;
+    border: 0;
+    margin-right: 15px;
+}
+.rate > input {
+    display: none;
+}
+.rate > label {
+    float: right;
+    color: #ddd;
+    font-size: 1.5rem; /* 크기를 조정합니다 */
+}
+.rate > label:before {
+    display: inline-block;
+    font-size: 1.5rem; /* 크기를 조정합니다 */
+    padding: .3rem .2rem;
+    margin: 0;
+    cursor: pointer;
+    font-family: FontAwesome;
+    content: "\f005 ";
+}
+.rate .half:before {
+    content: "\f089 ";
+    position: absolute;
+    padding-right: 0;
+    font-size: 1.5rem; /* 크기를 조정합니다 */
+}
+.rate input:checked ~ label,
+.rate label:hover,
+.rate label:hover ~ label {
+    color: #f73c32 !important;
+}
+.rate input:checked + .rate label:hover,
+.rate input input:checked ~ label:hover,
+.rate input:checked ~ .rate label:hover ~ label,
+.rate label:hover ~ input:checked ~ label {
+    color: #f73c32 !important;
+}
+
+
+#cafe_info {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+#write_box{
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    padding-left: 50px;
+}
+.write_map{
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.write_map img {
+    width: 450px;   /* 100% */
+    height: 400px;
+    border-radius: 8px;
+}
+#write_example {
+    width: 800px;
+    background: beige;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+#write_example textarea {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: block;
+}
+#submit_container {
+    text-align: right;
+    margin-top: 10px;
+}
+button.submit-review {
+    background-color: #F0CB85;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    height: 50px;
+    width: 100px;
+    display: inline-block;
+}
+button.submit-review:hover {
+    background-color: #FFB399;
+}
+.review #map{
+    width: 450px;
+    height: 400px;
+    position: relative;
+    margin-left: 20px;
+}
+
+/* 좋아요 더보기 */
+.kind_wrap {
+    border:3px solid #464646;
+    border-radius: 50px;
+    background-color:#f0f0f0;
+    width:100%;
+    max-width:1500px;
+    margin:0 auto;
+    position: relative;
+    justify-content: space-between;
+    overflow: hidden;
+    margin-bottom:30px;
+}
+.kind_wrap > .kind_slider {
+    overflow: hidden;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 10px; /* 카드 사이의 간격 */
+}
+
+.kind_wrap > .kind_slider img {
+    display: block;
+}
+
+.button2{
+    padding: 5px 10px;
+    border-radius: 15%;
+    border: none !important;
+    font-size: 20px !important;
+    margin-bottom: 10px;
+    background-color: #F4E1D2 !important;
+    color: #333333 !important;
+}
+.button2:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.button2.active {
+    background-color: #FFCC99; /* 강조 색 */
+    color: #000;              /* 글자색 변경 */
+    font-weight: bold;        /* 글씨 두껍게 */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+
+/* 페이징 */
+/* 페이징 네비게이션 전체 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* 페이징 네비게이션 항목 스타일 */
+.pagination li {
+    margin: 0 5px;
+}
+
+/* 페이징 네비게이션 링크 스타일 */
+.pagination a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal; /* 기본 글자 굵기 */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 페이징 네비게이션 링크 호버 스타일 */
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* 현재 페이지 스타일 */
+.pagination .active a {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    font-weight: bold; /* 현재 페이지의 글자 굵기 강조 */
+}
+
+/* 비활성화된 링크 스타일 (이전/다음) */
+.pagination .disabled a {
+    color: #6c757d;
+    border-color: #6c757d;
+    pointer-events: none;
+}
+
+/* 이전/다음 버튼 스타일 */
+.pagination .prev, .pagination .next {
+    font-weight: bold;
+}
+
+
+/* 마이 페이지 좋아요 */
+.cafe-container a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: black;
+    align-items: center;
+}
+.cafe-container span {
+    font-size: 16px;
+    margin-top: 10px;
+}
+.cafe-container i {
+    position: absolute;
+    bottom : 1px;
+    right: 10px;
+    color: red;
+    cursor: pointer;
+    font-size: 36px;
+}
+
+#mypagelikediv>header>h4{
+    position: relative;
+    left: 465px;
+    top: 30px;
+
+}

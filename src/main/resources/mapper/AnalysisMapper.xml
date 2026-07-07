@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icc2.analysis.domain.mapper.AnalysisMapper">
+	<insert id="upsertCoverageAnalysis">
+	  INSERT INTO coverage_analysis
+	    (customer_id, product_id, total_coverage, total_premium, analysis_date)
+	  SELECT
+	    #{customerId} AS customer_id,
+	    p.id          AS product_id,
+	    COALESCE(SUM(ci.coverage_amount), 0) AS total_coverage,
+	    (
+	      SELECT MIN(pc2.premium)
+	      FROM premium_condition pc2
+	      WHERE pc2.product_id = p.id
+	        AND #{age} BETWEEN pc2.min_age AND pc2.max_age
+	        <choose>
+	          <when test="includeUnisex">AND (pc2.gender = #{gender} OR pc2.gender IS NULL)</when>
+	          <otherwise>AND pc2.gender = #{gender}</otherwise>
+	        </choose>
+	    ) AS total_premium,   -- 고객 기준 최저 보험료
+	    NOW()
+	  FROM insurance_product p
+	  LEFT JOIN coverage_item ci ON ci.product_id = p.id
+	  WHERE p.id = #{productId}
+	  GROUP BY p.id
+	  ON DUPLICATE KEY UPDATE
+	    total_coverage = VALUES(total_coverage),
+	    total_premium  = VALUES(total_premium),
+	    analysis_date  = VALUES(analysis_date)
+</insert>
+	
+	<!-- 가입 가능 조건 존재 여부 -->
+  <select id="existsEligiblePremium" resultType="boolean">
+    SELECT EXISTS(
+      SELECT 1
+      FROM premium_condition pc
+      WHERE pc.product_id = #{productId}
+        AND #{age} BETWEEN pc.min_age AND pc.max_age
+        AND (
+          <choose>
+            <when test="includeUnisex"> (pc.gender = #{gender} OR pc.gender IS NULL) </when>
+            <otherwise> pc.gender = #{gender} </otherwise>
+          </choose>
+        )
+      LIMIT 1
+    )
+  </select>
+  
+  <select id="selectAnalysisResult"
+        resultType="AnalysisResultDTO">
+  SELECT
+    #{productId} AS productId,
+    #{customerId} AS customerId,
+    -- 담보 합계
+    COALESCE((
+      SELECT SUM(ci.coverage_amount)
+      FROM coverage_item ci
+      WHERE ci.product_id = #{productId}
+    ), 0) AS totalCoverage,
+    -- 고객 기준 보험료 통계
+    (
+      SELECT MIN(pc.premium) FROM premium_condition pc
+      WHERE pc.product_id = #{productId}
+        AND #{age} BETWEEN pc.min_age AND pc.max_age
+        <choose>
+          <when test="includeUnisex">AND (pc.gender = #{gender} OR pc.gender IS NULL)</when>
+          <otherwise>AND pc.gender = #{gender}</otherwise>
+        </choose>
+    ) AS minPremium,
+    (
+      SELECT AVG(pc.premium) FROM premium_condition pc
+      WHERE pc.product_id = #{productId}
+        AND #{age} BETWEEN pc.min_age AND pc.max_age
+        <choose>
+          <when test="includeUnisex">AND (pc.gender = #{gender} OR pc.gender IS NULL)</when>
+          <otherwise>AND pc.gender = #{gender}</otherwise>
+        </choose>
+    ) AS avgPremium,
+    (
+      SELECT MAX(pc.premium) FROM premium_condition pc
+      WHERE pc.product_id = #{productId}
+        AND #{age} BETWEEN pc.min_age AND pc.max_age
+        <choose>
+          <when test="includeUnisex">AND (pc.gender = #{gender} OR pc.gender IS NULL)</when>
+          <otherwise>AND pc.gender = #{gender}</otherwise>
+        </choose>
+    ) AS maxPremium
+</select>
+
+</mapper>

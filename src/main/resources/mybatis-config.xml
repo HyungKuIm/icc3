@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <typeAliases>
+
+        
+        <typeAlias type="com.icc2.customer.domain.model.CustomerDTO" alias="CustomerDTO" />
+        <typeAlias type="com.icc2.search.domain.model.SearchDTO" alias="SearchDTO" />
+        <typeAlias type="com.icc2.search.domain.model.CoverageItemDTO" alias="CoverageItemDTO" />
+        <typeAlias type="com.icc2.search.domain.model.InsuranceCompanyDTO" alias="InsuranceCompanyDTO" />
+        <typeAlias type="com.icc2.search.domain.model.InsuranceProductDetailDTO" alias="InsuranceProductDetailDTO" />
+        <typeAlias type="com.icc2.search.domain.model.PremiumConditionDTO" alias="PremiumConditionDTO" />
+        <typeAlias type="com.icc2.search.domain.model.EligibleProductDTO" alias="EligibleProductDTO" />
+        <typeAlias type="com.icc2.search.domain.model.ProductCoverageRecommendationDTO" alias="ProductCoverageRecommendationDTO" />
+        <typeAlias type="com.icc2.search.domain.model.CheapestProductDTO" alias="CheapestProductDTO" />
+        <typeAlias type="com.icc2.analysis.domain.model.AnalysisResultDTO" alias="AnalysisResultDTO" />
+        
+
+    </typeAliases>
+
+
+</configuration>
+
+

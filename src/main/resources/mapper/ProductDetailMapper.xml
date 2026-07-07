@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icc2.search.domain.mapper.ProductDetailMapper">
+
+	<!-- 하위 컬렉션 resultMap -->
+  <resultMap id="CoverageItemMap" type="CoverageItemDTO">
+    <id     property="id"                 column="coverage_id"/>
+    <result property="name"               column="coverage_name"/>
+    <result property="description"        column="coverage_description"/>
+    <result property="coverageAmount"     column="coverage_amount"/>
+    <result property="waitingPeriodDays"  column="coverage_waiting_days"/>
+    <result property="benefitLimit"       column="coverage_benefit_limit"/>
+  </resultMap>
+
+  <resultMap id="PremiumConditionMap" type="PremiumConditionDTO">
+    <id     property="id"                    column="premium_id"/>
+    <result property="minAge"                column="premium_min_age"/>
+    <result property="maxAge"                column="premium_max_age"/>
+    <result property="gender"                column="premium_gender"/>
+    <result property="premium"               column="premium_amount"/>
+    <result property="paymentPeriodYears"    column="premium_payment_years"/>
+    <result property="insurancePeriodYears"  column="premium_insurance_years"/>
+  </resultMap>
+
+  <!-- 루트 resultMap -->
+  <resultMap id="ProductDetailMap" type="InsuranceProductDetailDTO">
+    <id     property="id"          column="product_id"/>
+    <result property="name"        column="product_name"/>
+    <result property="productType" column="product_type"/>
+    <result property="startDate"   column="start_date"/>
+    <result property="endDate"     column="end_date"/>
+    <result property="rating"      column="rating"/>
+
+    <association property="company" javaType="InsuranceCompanyDTO">
+      <id     property="id"       column="company_id"/>
+      <result property="name"     column="company_name"/>
+      <result property="phone"    column="company_phone"/>
+      <result property="website"  column="company_website"/>
+      <result property="imageUrl"  column="company_image_url"/>
+    </association>
+
+    <!-- 두 개의 컬렉션을 같은 결과셋에서 동시에 매핑 -->
+    <collection property="coverageItems" ofType="CoverageItemDTO"
+                resultMap="CoverageItemMap"/>
+    <collection property="premiumConditions" ofType="PremiumConditionDTO"
+                resultMap="PremiumConditionMap"/>
+  </resultMap>
+
+  <!-- 상세 조회: product_id 한 건 -->
+  <select id="selectProductDetail" parameterType="int" resultMap="ProductDetailMap">
+    SELECT
+      -- product
+      p.id                           AS product_id,
+      p.name                         AS product_name,
+      p.product_type                 AS product_type,
+      p.start_date                   AS start_date,
+      p.end_date                     AS end_date,
+      -- company
+      ic.id                          AS company_id,
+      ic.name                        AS company_name,
+      ic.phone                       AS company_phone,
+      ic.website                     AS company_website,
+      ic.image_url                   AS company_image_url,
+       -- rating
+      CASE 
+	        WHEN COUNT(ca.id) >= 10 THEN 5
+	        WHEN COUNT(ca.id) = 0 THEN 0
+	        ELSE ROUND(COUNT(ca.id) / 2) -- 예: 1~9건 → 1~4점
+    		END AS rating,
+      -- coverage
+      ci.id                          AS coverage_id,
+      ci.name                        AS coverage_name,
+      ci.description                 AS coverage_description,
+      ci.coverage_amount             AS coverage_amount,
+      ci.waiting_period_days         AS coverage_waiting_days,
+      ci.benefit_limit               AS coverage_benefit_limit,
+      -- premium
+      pc.id                          AS premium_id,
+      pc.min_age                     AS premium_min_age,
+      pc.max_age                     AS premium_max_age,
+      pc.gender                      AS premium_gender,
+      pc.premium                     AS premium_amount,
+      pc.payment_period_years        AS premium_payment_years,
+      pc.insurance_period_years      AS premium_insurance_years
+    FROM insurance_product p
+    JOIN insurance_company ic ON ic.id = p.company_id
+    LEFT JOIN coverage_item ci  ON ci.product_id = p.id
+    LEFT JOIN premium_condition pc ON pc.product_id = p.id
+    LEFT JOIN coverage_analysis ca ON p.id = ca.product_id
+    WHERE p.id = #{productId}
+    ORDER BY ci.id, pc.min_age
+  </select>
+
+</mapper>

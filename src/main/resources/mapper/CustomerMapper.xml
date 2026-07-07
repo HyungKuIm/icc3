@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icc2.customer.domain.mapper.CustomerMapper">
+    <!-- 회원가입 -->
+    <insert id="addCustomer" parameterType="CustomerDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into customer(email,pw,name,occupation,birth_date,gender)
+        values
+            (#{email},#{pw},#{name},#{occupation},#{birth_date},#{gender})
+    </insert>
+
+
+    <!-- 가입여부 -->
+    <select id="emailCheck" resultType="int">
+        select count(email) from customer where email=#{email}
+    </select>
+
+    <!-- 이메일로 회원찾기 -->
+    <select id="findByEmail" resultType="CustomerDTO">
+        select * from customer
+        where email = #{email}
+    </select>
+
+    <!-- 개인정보 불러오기 -->
+    <select id="getCustomerInfo" resultType="CustomerDTO">
+        select 
+        	id, NAME, birth_date, gender, occupation, email, pw,
+			TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) age 
+        from customer
+        where id = #{id}
+    </select>
+
+    <!-- 개인정보 수정 -->
+    <update id="updateInfo">
+        update customer
+        set
+            email=#{email},
+            <if test="pw != null and pw != ''">
+                pw=#{pw},
+            </if>
+            occupation=#{occupation},
+            gender=#{gender}
+        where id=#{id}
+    </update>
+
+	<!-- 회원탈퇴 -->
+    <delete id="deleteAccount">
+        delete from customer where id=#{id}
+    </delete>
+
+
+</mapper>
