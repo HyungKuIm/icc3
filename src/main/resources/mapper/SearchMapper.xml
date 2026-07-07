@@ -5,52 +5,57 @@
 
 <mapper namespace="com.icc2.search.domain.mapper.SearchMapper">
     <select id="findByName" resultType="SearchDTO">
-    	SELECT 
-		    p.id AS product_id,
-		    p.name AS product_name,
-		    ic.name AS company_name,
-		    ic.image_url,
-		    p.product_type,
-		    p.start_date,
-		    p.end_date,
-		    GROUP_CONCAT(DISTINCT ci.name ORDER BY ci.name SEPARATOR ', ') AS coverage_items,
-		    MIN(pc.premium) AS min_premium,
-		    MAX(pc.premium) AS max_premium,
-		    CASE 
-		        WHEN COUNT(ca.id) >= 10 THEN 5
-		        WHEN COUNT(ca.id) = 0 THEN 0
-		        ELSE ROUND(COUNT(ca.id) / 2) -- 예: 1~9건 → 1~4점
-    		END AS rating
+		SELECT
+			p.id AS product_id,
+			p.name AS product_name,
+			ic.name AS company_name,
+			ic.image_url,
+			p.product_type,
+			p.start_date,
+			p.end_date,
+			GROUP_CONCAT(DISTINCT cm.name ORDER BY cm.name SEPARATOR ', ') AS coverage_items,
+			MIN(pc.premium) AS min_premium,
+			MAX(pc.premium) AS max_premium,
+			CASE
+				WHEN COUNT(ca.id) >= 10 THEN 5
+				WHEN COUNT(ca.id) = 0 THEN 0
+				ELSE ROUND(COUNT(ca.id) / 2) -- 예: 1~9건 → 1~4점
+				END AS rating
 		FROM insurance_product p
-		JOIN insurance_company ic 
-		    ON p.company_id = ic.id
-		LEFT JOIN coverage_item ci 
-		    ON p.id = ci.product_id
-		LEFT JOIN premium_condition pc 
-		    ON p.id = pc.product_id
-		LEFT JOIN coverage_analysis ca 
-    		 ON p.id = ca.product_id    
-		WHERE p.name LIKE CONCAT('%', #{keyWord}, '%')  -- 검색어 바인딩
+				 JOIN insurance_company ic
+					  ON p.company_id = ic.id
+				 LEFT JOIN product_coverage cv
+						   ON p.id = cv.product_id
+				 LEFT JOIN coverage_master cm
+						   ON cv.coverage_id = cm.id
+				 LEFT JOIN premium_condition pc
+						   ON p.id = pc.product_id
+				 LEFT JOIN coverage_analysis ca
+						   ON p.id = ca.product_id
+		WHERE p.name LIKE CONCAT('%', #{keyword}, '%')  -- 검색어 바인딩
 		GROUP BY p.id, p.name, ic.name, p.product_type, p.start_date, p.end_date
 		ORDER BY p.name ASC
     </select>
     
     <select id="findByCust" resultType="EligibleProductDTO">
-    	SELECT 
-		    p.id AS product_id,
-		    p.name AS product_name,
-		    c.name AS company_name,
-		    c.image_url,
-		    pc.premium,
-		    pc.min_age,
-		    pc.max_age
+		SELECT
+			p.id AS product_id,
+			p.name AS product_name,
+			c.name AS company_name,
+			c.image_url as imageUrl,
+			pc.premium,
+			pc.min_age,
+			pc.max_age
 		FROM customer cu
-		JOIN insurance_product p ON 1=1
-		JOIN insurance_company c ON p.company_id = c.id
-		JOIN premium_condition pc ON pc.product_id = p.id
+				 CROSS JOIN insurance_product p
+				 JOIN insurance_company c
+					  ON p.company_id = c.id
+				 JOIN premium_condition pc
+					  ON pc.product_id = p.id
+						  AND TIMESTAMPDIFF(YEAR, cu.birth_date, CURDATE())
+							 BETWEEN pc.min_age AND pc.max_age
+						  AND (pc.gender = cu.gender OR pc.gender IS NULL)
 		WHERE cu.id = #{custId}
-		  AND TIMESTAMPDIFF(YEAR, cu.birth_date, CURDATE()) BETWEEN pc.min_age AND pc.max_age
-		  AND (pc.gender = cu.gender OR pc.gender IS NULL)
     </select>
     
     
@@ -67,20 +72,20 @@
 
   	<select id="selectCoverageRichProducts"
           resultMap="ProductCoverageRecommendationMap">
-	    SELECT
-	      p.id AS product_id,
-	      p.name AS product_name,
-	      c.id   AS company_id,
-		   c.name AS company_name,
-		   c.image_url AS image_url,
-	      SUM(ci.coverage_amount) AS total_coverage_amount,
-	      AVG(pc.premium)         AS avg_premium
-	    FROM insurance_product p
-	    JOIN insurance_company c ON p.company_id = c.id
-	    JOIN coverage_item ci ON p.id = ci.product_id
-	    JOIN premium_condition pc ON p.id = pc.product_id
-	    GROUP BY p.id, p.name
-	    ORDER BY total_coverage_amount DESC
+		SELECT
+			p.id AS product_id,
+			p.name AS product_name,
+			c.id   AS company_id,
+			c.name AS company_name,
+			c.image_url AS image_url,
+			SUM(cv.coverage_amount) AS total_coverage_amount,
+			AVG(pc.premium)         AS avg_premium
+		FROM insurance_product p
+				 JOIN insurance_company c ON p.company_id = c.id
+				 JOIN product_coverage cv ON p.id = cv.product_id
+				 JOIN premium_condition pc ON p.id = pc.product_id
+		GROUP BY p.id, p.name
+		ORDER BY total_coverage_amount DESC
 	  </select>
 	  
 	  <resultMap id="CheapestProductMap" type="CheapestProductDTO">

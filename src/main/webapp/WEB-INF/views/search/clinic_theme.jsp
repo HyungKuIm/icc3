@@ -24,7 +24,7 @@
         
         <div style=" margin-left: 50px;">
             
-            <div class="kind_wrap">
+            <div class="kind_wrap no-paging">
                 <c:choose>
                     <c:when test="${not empty SRArrSDTO}">
                         <div class='kind_slider'>
@@ -36,7 +36,7 @@
                                             <div class="card-body" style="height: 180px;">
                                                 <h5 class="card-title" style="margin-bottom: 10px;">${likeProduct.product_name}</h5>
                                                 <div class="card-group">
-	                                                <div class="card-image"><img src="${likeProduct.image_url}" 
+	                                                <div class="card-image"><img src="<c:url value='/resources${likeProduct.image_url}'/>"
 	                                                			alt="${likeProduct.company_name}이미지" class="com_image"/></div>
 	                                                <div class="card-text-group">		
 		                                                <div class="card-text">보험사명:${likeProduct.company_name}</div>

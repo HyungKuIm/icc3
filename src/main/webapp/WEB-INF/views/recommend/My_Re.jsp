@@ -32,7 +32,7 @@
                             
                             <div class="card-body" style="height: 160px;">
                                 <h5 class="card-title" style="margin-bottom: 10px;">${likeProduct.product_name}</h5>
-                                <div class="card-image"><img src="${likeProduct.image_url}" 
+                                <div class="card-image"><img src="<c:url value='/resources${likeProduct.imageUrl}'/>"
 	                                                			alt="${likeProduct.company_name}이미지" class="com_image"/></div>
                                 <div class="card-text">보험사명:${likeProduct.company_name}</div>
                                 <div class="card-text">보험료:<fmt:formatNumber value="${likeProduct.premium}"/>원</div>

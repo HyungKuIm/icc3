@@ -185,12 +185,16 @@ p{
     background-color: #F0F8FF;
     width: 100%;
     max-width: 1500px;
-    height: 350px;
+    height: 490px;
     margin: 0 auto;
     position: relative;
     justify-content: space-between;
     margin-bottom: 20px;
     overflow: hidden;
+}
+
+.kind_wrap.no-paging {
+    height: auto;
 }
 
 .slider li {

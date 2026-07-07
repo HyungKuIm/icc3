@@ -60,22 +60,22 @@
       -- company
       ic.id                          AS company_id,
       ic.name                        AS company_name,
-      ic.phone                       AS company_phone,
-      ic.website                     AS company_website,
+      ic.tel                       AS company_phone,
+      ic.homepage                     AS company_website,
       ic.image_url                   AS company_image_url,
-       -- rating
-      CASE 
-	        WHEN COUNT(ca.id) >= 10 THEN 5
-	        WHEN COUNT(ca.id) = 0 THEN 0
-	        ELSE ROUND(COUNT(ca.id) / 2) -- 예: 1~9건 → 1~4점
-    		END AS rating,
+      -- rating
+      CASE
+        WHEN IFNULL(r.analysis_count, 0) >= 10 THEN 5
+        WHEN IFNULL(r.analysis_count, 0) = 0 THEN 0
+        ELSE ROUND(r.analysis_count / 2)
+        END AS rating,
       -- coverage
-      ci.id                          AS coverage_id,
-      ci.name                        AS coverage_name,
-      ci.description                 AS coverage_description,
-      ci.coverage_amount             AS coverage_amount,
-      ci.waiting_period_days         AS coverage_waiting_days,
-      ci.benefit_limit               AS coverage_benefit_limit,
+      cm.id                          AS coverage_id,
+      cm.name                        AS coverage_name,
+      cm.description                 AS coverage_description,
+      cv.coverage_amount             AS coverage_amount,
+      cv.waiting_period_days         AS coverage_waiting_days,
+      cv.benefit_limit               AS coverage_benefit_limit,
       -- premium
       pc.id                          AS premium_id,
       pc.min_age                     AS premium_min_age,
@@ -85,12 +85,20 @@
       pc.payment_period_years        AS premium_payment_years,
       pc.insurance_period_years      AS premium_insurance_years
     FROM insurance_product p
-    JOIN insurance_company ic ON ic.id = p.company_id
-    LEFT JOIN coverage_item ci  ON ci.product_id = p.id
-    LEFT JOIN premium_condition pc ON pc.product_id = p.id
-    LEFT JOIN coverage_analysis ca ON p.id = ca.product_id
+           JOIN insurance_company ic ON ic.id = p.company_id
+           LEFT JOIN product_coverage cv  ON cv.product_id = p.id
+           LEFT JOIN coverage_master cm ON cm.id = cv.coverage_id
+           LEFT JOIN premium_condition pc ON pc.product_id = p.id
+           LEFT JOIN (
+      SELECT
+        product_id,
+        COUNT(*) AS analysis_count
+      FROM coverage_analysis
+      GROUP BY product_id
+    ) r
+                     ON r.product_id = p.id
     WHERE p.id = #{productId}
-    ORDER BY ci.id, pc.min_age
+    ORDER BY cm.id, pc.min_age
   </select>
 
 </mapper>

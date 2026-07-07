@@ -43,7 +43,7 @@
                         <tr><td>이름</td>
                             <td><input id="regform" class="regfromc" type="text" name="name" value="${info.name }" readonly="readonly"></td></tr>
                         <tr><td>직업</td> <td><input id="regform" type="text" name="occupation" value="${info.occupation }" required></td></tr>
-                        <tr><td>생년월일</td> <td><input id="regform" type="date" name="birth_date" value="${info.birth_date }" readonly="readonly"></td></tr>
+                        <tr><td>생년월일</td> <td><input id="regform" type="date" name="birth_date" value="${info.birth_date }"></td></tr>
                         <tr><td>성별</td>
 
                             <td> <label for="gender01"><input type='radio' id="gender01" name='gender' value='F' <c:if test="${info.gender eq 'F' }"> checked </c:if>/>여성</label> &nbsp;

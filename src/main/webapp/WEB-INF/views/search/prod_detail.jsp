@@ -153,7 +153,7 @@
             <div class="cafe_info">
                 <ul>
                     <li><h5><strong>보험사 정보</strong></h5></li>
-                    <li><img src="${ProdDetail.company.imageUrl}" alt="${ProdDetail.company.name}이미지" class="com_image"/></li>
+                    <li><img src="<c:url value="/resources${ProdDetail.company.imageUrl}"/>" alt="${ProdDetail.company.name}이미지" class="com_image"/></li>
                     <li><strong>보험사명 :</strong> ${ProdDetail.company.name}</li>
                     <li><strong>전화번호 :</strong> ${ProdDetail.company.phone}</li>
                     <li><strong>웹사이트 :</strong> <a href="${ProdDetail.company.website}" target="_blank">${ProdDetail.company.website}</a></li>

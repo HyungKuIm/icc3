@@ -41,7 +41,8 @@
                 pw=#{pw},
             </if>
             occupation=#{occupation},
-            gender=#{gender}
+            gender=#{gender},
+            birth_date=#{birth_date}
         where id=#{id}
     </update>
 

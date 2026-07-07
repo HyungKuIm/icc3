@@ -68,7 +68,7 @@
                             
                             <div class="card-body" style="height: 180px;">
                                 <h5 class="card-title" style="margin-bottom: 10px;">${likeProduct.productName}</h5>
-                                <div class="card-image"><img src="${likeProduct.imageUrl}" 
+                                <div class="card-image"><img src="<c:url value='/resources${likeProduct.imageUrl}'/>"
 	                                                			alt="${likeProduct.companyName}이미지" class="com_image"/></div>
                                 <div class="card-text">보험회사명:${likeProduct.companyName}</div>
                                 

@@ -10,4 +10,5 @@ public class EligibleProductDTO {
 	private int premium;
 	private int min_age;
 	private int max_age;
+	private String imageUrl;
 }
