@@ -10,7 +10,7 @@
 	  SELECT
 	    #{customerId} AS customer_id,
 	    p.id          AS product_id,
-	    COALESCE(SUM(ci.coverage_amount), 0) AS total_coverage,
+	    COALESCE(SUM(cv.coverage_amount), 0) AS total_coverage,
 	    (
 	      SELECT MIN(pc2.premium)
 	      FROM premium_condition pc2
@@ -23,7 +23,7 @@
 	    ) AS total_premium,   -- 고객 기준 최저 보험료
 	    NOW()
 	  FROM insurance_product p
-	  LEFT JOIN coverage_item ci ON ci.product_id = p.id
+	  LEFT JOIN product_coverage cv ON cv.product_id = p.id
 	  WHERE p.id = #{productId}
 	  GROUP BY p.id
 	  ON DUPLICATE KEY UPDATE
@@ -56,9 +56,9 @@
     #{customerId} AS customerId,
     -- 담보 합계
     COALESCE((
-      SELECT SUM(ci.coverage_amount)
-      FROM coverage_item ci
-      WHERE ci.product_id = #{productId}
+      SELECT SUM(cv.coverage_amount)
+      FROM product_coverage cv
+      WHERE cv.product_id = #{productId}
     ), 0) AS totalCoverage,
     -- 고객 기준 보험료 통계
     (

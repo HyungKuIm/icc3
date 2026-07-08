@@ -43,7 +43,7 @@ public class AnalysisService {
 
         // 5) 메시지 등 후처리
         if (res != null) {
-            res.setMessage("coverage_analysis에 저장/갱신되었습니다.");
+            res.setMessage("보장분석이 완료되었습니다.");
         }
         return res;
         

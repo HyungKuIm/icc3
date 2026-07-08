@@ -24,7 +24,7 @@
         
         <div style=" margin-left: 50px;">
             
-            <div class="kind_wrap no-paging">
+            <div class="kind_wrap">
                 <c:choose>
                     <c:when test="${not empty SRArrSDTO}">
                         <div class='kind_slider'>

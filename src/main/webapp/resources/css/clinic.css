@@ -676,18 +676,25 @@ button.submit-review:hover {
     background-color:#f0f0f0;
     width:100%;
     max-width:1500px;
-    margin:0 auto;
     position: relative;
     justify-content: space-between;
     overflow: hidden;
-    margin-bottom:30px;
+    margin: 0 auto 30px;
+    box-sizing: border-box;
 }
 .kind_wrap > .kind_slider {
     overflow: hidden;
     position: relative;
     flex-wrap: wrap;
     gap: 10px; /* 카드 사이의 간격 */
+    max-height: 480px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*padding: 40px 50px;*/
+    box-sizing: border-box;
 }
+
+
 
 .kind_wrap > .kind_slider img {
     display: block;
