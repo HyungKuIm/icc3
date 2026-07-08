@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icc2.customer.domain.mapper.GoodMapper">
+    <!-- 좋아요 여부 검색 -->
+    <select id="findGood" parameterType="map" resultType="String">
+        select GOOD from customer_act where customer_id=#{custId} and product_id=#{prodId} and GOOD='Y'
+    </select>
+
+    <!-- 좋아요 추가식 -->
+    <select id="addGood" parameterType="map">
+        insert into customer_act(customer_id,product_id,GOOD) values(#{custId},#{prodId},'Y')
+        on duplicate key update
+            good = 'Y'
+    </select>
+
+    <!-- 마이페이지 좋아요리스트 -->
+    <select id="getLikedProds" parameterType="map" resultType="SearchDTO">
+        SELECT p.id, p.name, ic.image_url
+        FROM insurance_product p
+                 JOIN insurance_company ic
+                      ON p.company_id = ic.id
+
+
+        WHERE p.id IN (
+            SELECT product_id
+            FROM customer_act
+            WHERE customer_id = #{cust_id}
+              AND good = 'Y'
+        )
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 좋아요 누른 카페의 총 개수 -->
+    <select id="getLikedProdsCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM customer_act
+        WHERE customer_id = #{custId} AND good = 'Y'
+    </select>
+</mapper>

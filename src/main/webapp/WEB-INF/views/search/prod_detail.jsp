@@ -12,7 +12,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script>
   const ctx = "${ctx}";
-  
+
+  function clickheart(memberId,prodId) {
+	  console.log(memberId);
+	  console.log(prodId);
+	  $.ajax({
+		  url:`${ctx}/addGood.do`,
+		  type: 'POST',
+		  data: {
+			  custId:memberId,
+			  prodId:prodId
+		  },
+		  success: function(response) {
+			  if (response === "needlogin") {
+				  alert("로그인이 필요합니다.");
+				  window.location.href = `${ctx}/login.do`;
+			  } else if (response === "already") {
+				  alert("이미 좋아요 상태입니다.");
+			  } else if (response === "done") {
+				  alert("좋아요에 추가되었습니다.");
+			  }
+		  },
+		  error: function (xhr, status, error) {
+			  alert("서버 통신 중 오류가 발생했습니다.");
+			  console.error("AJAX Error:", status, error);
+		  }
+	  });
+  }
+
+
 
   function setLoading(isLoading){
     const btn = document.getElementById('btnAnalysis');
@@ -109,6 +137,11 @@
     <div id="cafe_box">
         <div class="cafe_header">
             <h3>${ProdDetail.name}</h3>
+			<button class="favorite" onclick="clickheart('${custId}','${ProdDetail.id}')">
+				<i class="fas fa-heart"></i>
+			</button>
+
+
             <!-- 로그인 사용자만 보장분석 버튼 노출 -->
 			  <sec:authorize access="isAuthenticated()">
 			    <button class="favorite" id="btnAnalysis"
@@ -126,18 +159,7 @@
 			  </sec:authorize>
         </div>
         
-        <div class="flex-container">
-			<h5>별점: ${ProdDetail.rating} / 5</h5>
-			<div class="stars">
-                 <!-- POINT 수만큼 별을 보여줌 -->
-                 <c:forEach begin="1" end="${ProdDetail.rating}" var="i">
-                     <i class="fas fa-star" style="color: gold;"></i>
-                 </c:forEach>
-                 <c:forEach begin="1" end="${5 - ProdDetail.rating}" var="i">
-				    <i class="far fa-star" style="color: gold;"></i>
-				</c:forEach>
-             </div>
-        </div>
+
         
         <div id="analysisBox" class="cafe_info" style="display:none; margin-top:12px;">
 		  <h5><strong>보장분석 결과</strong></h5>

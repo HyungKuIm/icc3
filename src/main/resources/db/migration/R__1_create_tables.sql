@@ -68,6 +68,16 @@ CREATE TABLE IF NOT EXISTS customer (
     PRIMARY KEY(ID)
 ) COMMENT '고객';
 
+CREATE TABLE IF NOT EXISTS customer_act (
+    id INT(11) unsigned not null AUTO_INCREMENT COMMENT '고객활동번호',
+    customer_id INT NOT NULL COMMENT '고객외래키',
+    product_id INT NOT NULL COMMENT '상품외래키',
+    good ENUM('Y', 'N') DEFAULT 'N' COMMENT '좋아요',
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일자',
+    mod_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
+    primary key(id)
+) COMMENT '고객활동';
+
 CREATE TABLE IF NOT EXISTS coverage_analysis (
 
    id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '보장분석고유번호',
@@ -85,3 +95,33 @@ CREATE TABLE IF NOT EXISTS coverage_analysis (
     PRIMARY KEY(ID)
 
 ) COMMENT '보장분석';
+
+
+
+CREATE TABLE churn_prediction (
+  id int(11) unsigned AUTO_INCREMENT NOT NULL,
+  customer_id INT NOT NULL,
+  churn_score DECIMAL(5,2) NOT NULL COMMENT '이탈가능점수',
+  churn_level ENUM('LOW','MEDIUM','HIGH') NOT NULL COMMENT '이탈위험등급',
+  prediction_reason VARCHAR(500) NULL COMMENT '예측사유',
+  last_analysis_date DATETIME NULL COMMENT '최근보장분석일',
+  status ENUM('예측','관리중','유지','이탈') DEFAULT '예측' COMMENT '관리상태',
+  prediction_date DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '예측일자',
+  mod_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
+  primary key(id)
+) COMMENT '고객이탈예측';
+
+CREATE TABLE churn_activity (
+    id int(11) unsigned AUTO_INCREMENT NOT NULL,
+    churn_prediction_id INT(11) unsigned NOT NULL,
+    customer_id INT NOT NULL,
+    activity_type ENUM('전화','문자','이메일','상담','혜택제안','기타') NOT NULL COMMENT '활동유형',
+    activity_content TEXT NULL COMMENT '활동내용',
+    result_status ENUM('미응답','관심있음','상담예약','유지확정','이탈확정') DEFAULT '미응답' COMMENT '활동결과',
+    next_action_date DATETIME NULL COMMENT '다음조치일',
+    manager_name VARCHAR(50) NULL COMMENT '담당자',
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '등록일자',
+    mod_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일자',
+    primary key(id)
+
+) COMMENT '이탈고객 활동관리';
