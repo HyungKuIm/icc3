@@ -13,9 +13,9 @@
 	<script>
   const ctx = "${ctx}";
 
-  function clickheart(memberId,prodId) {
-	  console.log(memberId);
-	  console.log(prodId);
+  function clickheart(memberId,prodId, btn) {
+
+
 	  $.ajax({
 		  url:`${ctx}/addGood.do`,
 		  type: 'POST',
@@ -30,6 +30,11 @@
 			  } else if (response === "already") {
 				  alert("이미 좋아요 상태입니다.");
 			  } else if (response === "done") {
+				  var icon=$(btn).find("i");
+
+				  icon.removeClass("far inactive");
+				  icon.addClass("fas active");
+
 				  alert("좋아요에 추가되었습니다.");
 			  }
 		  },
@@ -137,8 +142,8 @@
     <div id="cafe_box">
         <div class="cafe_header">
             <h3>${ProdDetail.name}</h3>
-			<button class="favorite" onclick="clickheart('${custId}','${ProdDetail.id}')">
-				<i class="fas fa-heart"></i>
+			<button class="favorite" onclick="clickheart('${custId}','${ProdDetail.id}', this)">
+				<i class="${ProdDetail.liked == 1 ? 'fas active' : 'far inactive'} fa-heart"></i>
 			</button>
 
 
@@ -154,7 +159,7 @@
 			  <!-- 비로그인 시: 로그인 유도 -->
 			  <sec:authorize access="!isAuthenticated()">
 			    <button class="favorite" onclick="location.href='${ctx}/login.do?redirect=${pageContext.request.requestURI}?prodId=${ProdDetail.id}'">
-			      로그인 후 보장분석 <i class="fas fa-sign-in-alt"></i>
+					보장분석 <i class="fas fa-sign-in-alt"></i>
 			    </button>
 			  </sec:authorize>
         </div>

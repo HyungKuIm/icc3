@@ -32,6 +32,7 @@
     <result property="startDate"   column="start_date"/>
     <result property="endDate"     column="end_date"/>
     <result property="rating"      column="rating"/>
+    <result property="liked"      column="liked"/>
 
     <association property="company" javaType="InsuranceCompanyDTO">
       <id     property="id"       column="company_id"/>
@@ -49,7 +50,7 @@
   </resultMap>
 
   <!-- 상세 조회: product_id 한 건 -->
-  <select id="selectProductDetail" parameterType="int" resultMap="ProductDetailMap">
+  <select id="selectProductDetail" resultMap="ProductDetailMap">
     SELECT
       -- product
       p.id                           AS product_id,
@@ -83,20 +84,29 @@
       pc.gender                      AS premium_gender,
       pc.premium                     AS premium_amount,
       pc.payment_period_years        AS premium_payment_years,
-      pc.insurance_period_years      AS premium_insurance_years
+      pc.insurance_period_years      AS premium_insurance_years,
+      CASE
+        WHEN #{custId} IS NOT NULL
+          AND ca.id IS NOT NULL THEN 1
+        ELSE 0
+        END AS liked
     FROM insurance_product p
            JOIN insurance_company ic ON ic.id = p.company_id
            LEFT JOIN product_coverage cv  ON cv.product_id = p.id
            LEFT JOIN coverage_master cm ON cm.id = cv.coverage_id
            LEFT JOIN premium_condition pc ON pc.product_id = p.id
            LEFT JOIN (
-      SELECT
-        product_id,
-        COUNT(*) AS analysis_count
-      FROM coverage_analysis
-      GROUP BY product_id
-    ) r
+              SELECT
+                product_id,
+                COUNT(*) AS analysis_count
+              FROM coverage_analysis
+              GROUP BY product_id
+            ) r
                      ON r.product_id = p.id
+           LEFT JOIN customer_act ca ON ca.product_id = p.id
+                                    <if test="custId != null">
+                                        and ca.customer_id = #{custId}
+                                    </if>
     WHERE p.id = #{productId}
     ORDER BY cm.id, pc.min_age
   </select>

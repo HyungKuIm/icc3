@@ -79,6 +79,19 @@ button[type=button], button.favorite {
     color: #ff4757;
 }
 
+.favorite i {
+    font-size: 24px;
+    transition: .2s;
+}
+
+.favorite i.active {
+    color: red;
+}
+
+.favorite i.inactive {
+    color: #bbb;
+}
+
 button.favorite:hover {
     color: #e84118;
 }

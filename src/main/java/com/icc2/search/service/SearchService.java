@@ -26,8 +26,8 @@ public class SearchService {
 		return searchMapper.findByName(name);
 	}
 	
-	public InsuranceProductDetailDTO getProductById(int prodId) {
-		return productDetailMapper.selectProductDetail(prodId);
+	public InsuranceProductDetailDTO getProductById(int prodId, Integer custId) {
+		return productDetailMapper.selectProductDetail(prodId, custId);
 	}
 	
 	public List<EligibleProductDTO> getEligibleProducts(int custId) {

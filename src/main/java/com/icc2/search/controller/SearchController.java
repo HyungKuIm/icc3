@@ -3,9 +3,12 @@ package com.icc2.search.controller;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.icc2.customer.domain.model.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +37,15 @@ public class SearchController {
 	
 	// 보험 상세
 	@RequestMapping(path = "/detail.do", method = GET)
-	public String detailInsurance(@RequestParam("prodId") Integer prodId, Model model) {
-		
+	public String detailInsurance(
+			@AuthenticationPrincipal CustomerDTO customerDTO,
+			@RequestParam("prodId") Integer prodId, Model model) {
 
-		InsuranceProductDetailDTO prodDetail = searchService.getProductById(prodId);
+		Integer customerId = Optional.ofNullable(customerDTO)
+				.map(CustomerDTO::getId)
+				.orElse(null);
+
+		InsuranceProductDetailDTO prodDetail = searchService.getProductById(prodId, customerId);
 		model.addAttribute("ProdDetail", prodDetail);
 		
 		return "search/prod_detail";
