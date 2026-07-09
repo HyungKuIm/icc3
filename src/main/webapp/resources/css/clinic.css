@@ -210,6 +210,14 @@ p{
     margin-right: 25px;
 }
 
+.card:hover {
+    cursor: pointer;
+    background-color: #FFB399;
+}
+
+.card .card-image {
+}
+
 #main{
     margin-left:20px;
     font-size: 50px;
@@ -477,7 +485,7 @@ label {
 
 .com_image {
 	width: 100px;
-	height: 100px;
+	height: auto;
 }
 
 .filter-button {
@@ -776,21 +784,34 @@ button.submit-review:hover {
 
 
 /* 마이 페이지 좋아요 */
+.cafe-container {
+
+    margin-bottom: 20px;
+    margin-top: 12%;
+    transition: all .3s ease;
+}
+
+.cafe-container:hover{
+    transform: translateY(-5px) scale(1.03);
+    box-shadow:0 10px 20px rgba(0,0,0,.15);
+}
+
 .cafe-container a {
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: black;
     align-items: center;
+
 }
+
+
+
 .cafe-container span {
     font-size: 16px;
     margin-top: 10px;
 }
 .cafe-container i {
-    position: absolute;
-    bottom : 1px;
-    right: 10px;
     color: red;
     cursor: pointer;
     font-size: 36px;

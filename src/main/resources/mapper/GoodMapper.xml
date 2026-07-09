@@ -17,7 +17,7 @@
 
     <!-- 마이페이지 좋아요리스트 -->
     <select id="getLikedProds" parameterType="map" resultType="SearchDTO">
-        SELECT p.id, p.name, ic.image_url
+        SELECT p.id as product_id, p.name as product_name, ic.image_url
         FROM insurance_product p
                  JOIN insurance_company ic
                       ON p.company_id = ic.id
