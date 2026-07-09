@@ -17,6 +17,11 @@
             <ul>
                 <li><a href="${ctx}/info.do">내 정보 수정</a></li>
             </ul>
+            <h5>나의 활동</h5>
+            <ul>
+                <li><a href="${ctx}/myGood.do">좋아요 누른 상품</a></li>
+                <li><a href="${ctx}/goMyAnal.do">보장분석을 한 상품</a></li>
+            </ul>
             
             <ul>
                 <li><a href="${ctx}/deleteView.do">회원탈퇴</a></li>
