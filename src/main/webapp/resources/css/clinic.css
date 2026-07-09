@@ -145,6 +145,12 @@ h4, h5 {
     align-items: center; /* 두 요소를 수직으로 정렬 */
 }
 
+.heart_count {
+    display: flex;
+    gap: 5px;
+    color: #6c757d;
+}
+
 .review-score {
     margin-left: 30px;
 }

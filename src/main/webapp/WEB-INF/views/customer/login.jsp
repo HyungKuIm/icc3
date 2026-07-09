@@ -20,11 +20,11 @@
                 <table>
                     <tr>
                         <td>이메일</td>
-                        <td><input id="username" type="text" name="username" placeholder="이메일" required value="sora@naver.com"></td>
+                        <td><input id="username" type="text" name="username" placeholder="이메일" required value=""></td>
                     </tr>
                     <tr>
                         <td>비밀번호</td>
-                        <td><input id="password" type="password" name="password" placeholder="비밀번호" required value="1234"></td>
+                        <td><input id="password" type="password" name="password" placeholder="비밀번호" required value=""></td>
                     </tr>
                 </table>
                 <div class="error-message">

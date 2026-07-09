@@ -33,6 +33,7 @@
     <result property="endDate"     column="end_date"/>
     <result property="rating"      column="rating"/>
     <result property="liked"      column="liked"/>
+    <result property="likedCount"      column="liked_count"/>
 
     <association property="company" javaType="InsuranceCompanyDTO">
       <id     property="id"       column="company_id"/>
@@ -89,7 +90,8 @@
         WHEN #{custId} IS NOT NULL
           AND ca.id IS NOT NULL THEN 1
         ELSE 0
-        END AS liked
+        END AS liked,
+    y.liked_count
     FROM insurance_product p
            JOIN insurance_company ic ON ic.id = p.company_id
            LEFT JOIN product_coverage cv  ON cv.product_id = p.id
@@ -107,6 +109,15 @@
                                     <if test="custId != null">
                                         and ca.customer_id = #{custId}
                                     </if>
+        LEFT JOIN (
+          SELECT
+            product_id,
+            COUNT(*) AS liked_count
+          FROM customer_act
+          where good = 'Y'
+          group by product_id
+        ) y
+                        ON y.product_id = p.id
     WHERE p.id = #{productId}
     ORDER BY cm.id, pc.min_age
   </select>

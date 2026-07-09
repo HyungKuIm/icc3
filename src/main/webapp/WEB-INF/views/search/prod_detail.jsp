@@ -141,10 +141,12 @@
 	<c:set var="custId" value="${isAuth ? custInfo.id : ''}" />
     <div id="cafe_box">
         <div class="cafe_header">
-            <h3>${ProdDetail.name}</h3>
-			<button class="favorite" onclick="clickheart('${custId}','${ProdDetail.id}', this)">
-				<i class="${ProdDetail.liked == 1 ? 'fas active' : 'far inactive'} fa-heart"></i>
-			</button>
+            <h3>${ProdDetail.name}
+				<button class="favorite" onclick="clickheart('${custId}','${ProdDetail.id}', this)">
+					<i class="${ProdDetail.liked == 1 ? 'fas active' : 'far inactive'} fa-heart"></i>
+				</button>
+			</h3>
+
 
 
             <!-- 로그인 사용자만 보장분석 버튼 노출 -->
@@ -156,13 +158,10 @@
 			    </button>
 			  </sec:authorize>
 			
-			  <!-- 비로그인 시: 로그인 유도 -->
-			  <sec:authorize access="!isAuthenticated()">
-			    <button class="favorite" onclick="location.href='${ctx}/login.do?redirect=${pageContext.request.requestURI}?prodId=${ProdDetail.id}'">
-					보장분석 <i class="fas fa-sign-in-alt"></i>
-			    </button>
-			  </sec:authorize>
+
         </div>
+
+
         
 
         
@@ -175,7 +174,9 @@
             <div class="flex-container">
                 <h5>상품타입: ${ProdDetail.productType}</h5>
                 <h5>판매기간:${ProdDetail.startDate} 
-                    ~ ${ProdDetail.endDate == null ? '판매중' : ProdDetail.endDate}</h5>
+                    ~ ${ProdDetail.endDate == null ? '판매중' : ProdDetail.endDate}
+				</h5>
+				<div class="heart_count"><i class="fas fa-heart"></i><span>${ProdDetail.likedCount}</span></div>
             </div>
             <div class="cafe_info">
                 <ul>

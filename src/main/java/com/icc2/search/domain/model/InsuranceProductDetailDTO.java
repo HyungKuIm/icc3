@@ -13,6 +13,7 @@ public class InsuranceProductDetailDTO {
     private java.time.LocalDate endDate;
     private String rating;
     private Integer liked;
+    private int likedCount;
 
     private InsuranceCompanyDTO company;               // association (1)
     private List<CoverageItemDTO> coverageItems;      // collection (N)
